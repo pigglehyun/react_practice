@@ -1,0 +1,162 @@
+element : 어떤 물체를 구성하는 성분 / the smallest building blocks
+
+DOM Elements != React Elements
+
+React element = dom element 의 가상 표현
+
+React elements 는 immutable (불변성)
+ == elements 생성 후에는 children이나 attributes를 바꿀 수 없다 !
+
+Element Rendering
+
+Reacto component input : props, output : react element
+
+Props : React Component의 property  (속성) //붕어빵 쟤료
+ - 읽을 수만 있음 (변경 불가)	//붕어빵 굽고나서 속쟤료 변경 불가
+ -> 새로운 값을 컴포넌트에 전달해 변경해야함
+
+
+JSX사용
+
+function App(props){
+	return (
+		<Profile
+			name = "피글"
+			introduction = "안녕하세요"
+			viewCount = {500}
+		/>
+	);
+}
+
+JSX사용x
+React.createElement(
+	Profile,
+	{
+		name : "피글",
+		introduction : "안녕하세요",
+		viewCount : 500
+	},
+	null
+);
+
+------------
+Component - Function/Class Component
+
+*Function Component
+function Welcome(props){
+	return <h1>안녕, {props.name}</h1>;
+)
+
+*Class Component
+class Welcome extends React.Component{
+	render() {
+		return <h1>안녕, {this.props.name}</h1>;
+	}
+}
+
+!!! Component 이름은 항상 대문자로 시작해야함 !!!
+const element = <Welcome name ="인제" />;
+
+재사용 가능한 Component를 많이 갖고 있을수록 개발 속도가 빨라진다
+
+---------------------
+
+Hook
+function component는 lifecycle에 따른 기능 구현이 불가하기때문에 hook을 사용
+->원하는 시점에 원하는 함수를 실행시킬 수 있음
+
+useState()
+const [변수명, set함수명] = useState(초기값);
+
+
+useEffect() : side effect를 위한 함수
+useEffect( 이펙트 함수, 의존성 배열);
+- 의존성 배열 중 하나라도 변경될 시 이펙트 함수가 실행됨.
+- mount, unmount시 단 한번만 사용할려면 의존성 배열에 [] 넣기
+- 컴포넌트가 업데이트마다 호출하려면 의존성 배열 빼고 쓰기
+- useEffect()의 return 문 -> component unMount될 때 호출됨!
+
+
+useMemo()
+Memoized value :
+const memoizedValue = useMemo(
+	() => {  return computeExpensiveValue(의존성 변수1, 의존성 변수2); },
+	[의존성 변수1, 의존성 변수2] );
+
+-rendering이 일어날 동안 실행되는 함수임
+
+
+useCallback()
+const memoizedCallback = useCallback(
+	() => { doSomething(의존성 변수1, 의존성 변수2); },
+	[의존성 변수1, 의존성 변수2] );
+
+useCallback (함수, 의존성배열) ; == useMemo( ()=>함수, 의존성 배열);
+
+
+useRef()
+Reference를 사용하기 위한 hook
+reference? 특정 컴포넌트에 접근할 수 있는 객체
+const refContainer = useRef(초깃값);
+변경가능한 current라는 속성을 가진 하나의 상자
+
+
+Hook의 규칙
+1. hook은 무조건 최상위 레벨에서만 호출해야 한다. (반복문, 조건문 내에서 금지)
+  -컴포넌트가 렌더링될 때마다 매번 같은 순서로 호출되어야한다. 
+2. 리액트 함수 컴포넌트에서만 호출해야 한다.
+
+
+Custom Hook의 이름은 꼭 use로 시작해야함 !
+
+
+--------------------------------------------------------------------------------
+
+8강
+
+Event (이벤트) : '특정 사건' ( ex)버튼 클릭 이벤트 ) 
+DOM -< onclick = "activate()"
+React -> onClick = {activate}
+
+camelCase (카멜 표기법) 사용하기
+
+event Handler : 어떤 사건이 발생하면 처리하는 역할
+
+bind를 사용하기 !
+javascript에서는 기본적으로 class 함수들이 bound 되지 않기 때문.
+그래서 bind를 하지 않으면 this.handleClick은 gloabl scope에서 호출되어버리는데
+이 때 undefined이기 때문에 사용할 수 없게됨
+
+event handler 사용하기
+1. 함수 안에 함수로 정의
+2. arrow function을 사용하여 정의
+
+argument : event handler 에 전달할 데이터
+
+bind
+onClick={this.deleteItem.bind(this,id)}
+arrow function
+onClick={(event) => this.deleteItem(id, event)}
+
+
+
+---------------------------------------------------------------------------------
+9강
+Conditional Rendering
+조건에 따른 렌더링 (조건부렌더링)  (ex/ true이면 버튼 보이고 false이면 버튼 없어짐)
+
+Truthy : true는 아니지만 true로 여겨지는 값
+	{},[],42,"0","false"
+Falsy : false는 아니지만 false로 여겨지는 값
+	0,-0,0n,'',"",``,null,undefined,NaN
+
+if 대신 && 쓰는 방법 多
+
+if-else 대신 ? 
+
+null을 넣으면 rendering 되지 않음.
+
+
+
+
+
